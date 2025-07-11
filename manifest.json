@@ -4,48 +4,49 @@
   "description": "Pier Alüminyum, cam ve alüminyum sistemlerinde yenilikçi ve kaliteli çözümler sunar.",
   "start_url": "/index.html",
   "display": "standalone",
+  "scope": "/",
   "background_color": "#ffffff",
-  "theme_color": "#007bff",
+  "theme_color": "#2c3e50",
   "icons": [
     {
-      "src": "/img/icons/icon-72x72.png",
+      "src": "/img/icons/icon-72x72.jpg",
       "sizes": "72x72",
-      "type": "image/png"
+      "type": "image/jpg"
     },
     {
-      "src": "/img/icons/icon-96x96.png",
+      "src": "/img/icons/icon-96x96.jpg",
       "sizes": "96x96",
-      "type": "image/png"
+      "type": "image/jpg"
     },
     {
-      "src": "/img/icons/icon-128x128.png",
+      "src": "/img/icons/icon-128x128.jpg",
       "sizes": "128x128",
-      "type": "image/png"
+      "type": "image/jpg"
     },
     {
-      "src": "/img/icons/icon-144x144.png",
+      "src": "/img/icons/icon-144x144.jpg",
       "sizes": "144x144",
-      "type": "image/png"
+      "type": "image/jpg"
     },
     {
-      "src": "/img/icons/icon-152x152.png",
+      "src": "/img/icons/icon-152x152.jpg",
       "sizes": "152x152",
-      "type": "image/png"
+      "type": "image/jpg"
     },
     {
-      "src": "/img/icons/icon-192x192.png",
+      "src": "/img/icons/icon-192x192.jpg",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/jpg"
     },
     {
-      "src": "/img/icons/icon-384x384.png",
+      "src": "/img/icons/icon-384x384.jpg",
       "sizes": "384x384",
-      "type": "image/png"
+      "type": "image/jpg"
     },
     {
-      "src": "/img/icons/icon-512x512.png",
+      "src": "/img/icons/icon-512x512.jpg",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/jpg"
     }
   ]
 }
