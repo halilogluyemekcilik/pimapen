@@ -1,0 +1,604 @@
+/* Genel Stil Tanımları */
+:root {
+    --primary-color: #FFC107; /* Sarı */
+    --secondary-color: #343a40; /* Koyu Gri / Siyah tonu */
+    --text-color: #495057; /* Koyu Gri Metin */
+    --light-bg: #f8f9fa; /* Açık Gri Arka Plan */
+    --white: #ffffff;
+    --dark: #212529; /* Daha Koyu Gri */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif; /* Daha sonra font tercihinize göre değiştirilebilir */
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--white);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+ul {
+    list-style: none;
+}
+
+h1, h2, h3 {
+    color: var(--dark);
+    margin-bottom: 15px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+    position: relative;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+
+.btn {
+    display: inline-block;
+    background: var(--primary-color);
+    color: var(--dark);
+    padding: 12px 25px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: var(--dark);
+    color: var(--white);
+}
+
+.btn.secondary-btn {
+    background: var(--secondary-color);
+    color: var(--white);
+    margin-top: 20px;
+}
+
+.btn.secondary-btn:hover {
+    background: var(--primary-color);
+    color: var(--dark);
+}
+
+/* Top Bar */
+.top-bar {
+    background: var(--dark);
+    color: var(--white);
+    padding: 10px 0;
+    font-size: 0.9rem;
+}
+
+.top-bar .container {
+    display: flex;
+    justify-content: flex-end; /* Sağ tarafa hizalı */
+}
+
+.top-bar .contact-info a {
+    color: var(--white);
+    margin-left: 20px;
+    transition: color 0.3s ease;
+}
+
+.top-bar .contact-info a:hover {
+    color: var(--primary-color);
+}
+
+.top-bar .contact-info i {
+    margin-right: 5px;
+}
+
+/* Header (Navigasyon) */
+header {
+    background: var(--white);
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 60px; /* Logo boyutunu ayarlayın */
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: var(--dark);
+    font-weight: 600;
+    padding: 5px 0;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    background-color: var(--primary-color);
+    left: 0;
+    bottom: -5px;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    width: 100%;
+}
+
+/* Hamburger Menü */
+.burger {
+    display: none;
+    cursor: pointer;
+}
+
+.burger div {
+    width: 25px;
+    height: 3px;
+    background-color: var(--dark);
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Hero Bölümü */
+.hero {
+    background: url('img/hero-bg.jpg') no-repeat center center/cover; /* Arka plan görseli ekleyin */
+    color: var(--white);
+    text-align: center;
+    padding: 150px 0;
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Overlay */
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    color: var(--white);
+}
+
+.hero p {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    color: var(--white);
+}
+
+/* Hizmetlere Genel Bakış */
+.services-overview {
+    padding: 80px 0;
+    background: var(--light-bg);
+}
+
+.service-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.service-card {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.service-card i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.service-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.service-card p {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.service-card .read-more {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.service-card .read-more:hover {
+    color: var(--primary-color);
+}
+
+.services-overview .secondary-btn {
+    display: block;
+    width: fit-content;
+    margin: 50px auto 0 auto;
+}
+
+/* Neden Bizi Seçmelisiniz Bölümü */
+.why-us {
+    padding: 80px 0;
+    background: var(--white);
+}
+
+.reasons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.reason-item {
+    text-align: center;
+    padding: 30px;
+    background: var(--light-bg);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.reason-item i {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.reason-item h3 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
+
+.reason-item p {
+    font-size: 1rem;
+}
+
+/* Öne Çıkan Projeler Bölümü */
+.featured-projects {
+    padding: 80px 0;
+    background: var(--secondary-color);
+    color: var(--white);
+}
+
+.featured-projects h2 {
+    color: var(--white);
+}
+
+.featured-projects h2::after {
+    background-color: var(--primary-color);
+}
+
+.project-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.project-item {
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.project-item:hover {
+    transform: translateY(-10px);
+}
+
+.project-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+.project-info {
+    padding: 20px;
+    color: var(--dark);
+}
+
+.project-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--secondary-color);
+}
+
+.project-info p {
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+}
+
+.project-info .read-more {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.project-info .read-more:hover {
+    text-decoration: underline;
+}
+
+.featured-projects .secondary-btn {
+    display: block;
+    width: fit-content;
+    margin: 50px auto 0 auto;
+    background: var(--primary-color);
+    color: var(--dark);
+}
+
+.featured-projects .secondary-btn:hover {
+    background: var(--white);
+    color: var(--dark);
+}
+
+/* Footer */
+footer {
+    background: var(--dark);
+    color: var(--white);
+    padding: 60px 0 20px 0;
+    font-size: 0.9rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 30px;
+}
+
+.footer-logo img {
+    height: 70px;
+    margin-bottom: 15px;
+}
+
+.footer-logo p {
+    color: rgba(255,255,255,0.8);
+}
+
+.footer-links h3,
+.footer-contact h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+.footer-links ul li {
+    margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+    color: rgba(255,255,255,0.8);
+    transition: color 0.3s ease;
+}
+
+.footer-links ul li a:hover {
+    color: var(--primary-color);
+}
+
+.footer-contact p {
+    margin-bottom: 10px;
+    color: rgba(255,255,255,0.8);
+}
+
+.footer-contact p i {
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.footer-contact p a {
+    color: rgba(255,255,255,0.8);
+}
+
+.footer-contact p a:hover {
+    color: var(--primary-color);
+}
+
+.social-links {
+    margin-top: 20px;
+}
+
+.social-links a {
+    color: var(--white);
+    font-size: 1.5rem;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--primary-color);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 20px;
+    color: rgba(255,255,255,0.6);
+}
+
+/* Responsive Tasarım */
+@media (max-width: 992px) {
+    .nav-links {
+        gap: 20px;
+    }
+
+    .hero h1 {
+        font-size: 2.8rem;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-bar .container {
+        justify-content: center;
+    }
+
+    .top-bar .contact-info {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    header .container {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .logo {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .nav-links {
+        display: none; /* JavaScript ile görünür yapılacak */
+        flex-direction: column;
+        width: 100%;
+        background-color: var(--white);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        position: absolute;
+        top: 90px; /* Header yüksekliğine göre ayarlayın */
+        left: 0;
+        padding: 20px 0;
+        z-index: 999;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    .burger {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 35px;
+    }
+
+    .burger.toggle .line1 {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .burger.toggle .line2 {
+        opacity: 0;
+    }
+
+    .burger.toggle .line3 {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    .hero {
+        padding: 100px 0;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero p {
+        font-size: 1.1rem;
+    }
+
+    .service-cards, .reasons, .project-gallery, .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    .service-card, .reason-item, .project-item {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .top-bar .contact-info a {
+        font-size: 0.85rem;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
