@@ -151,10 +151,18 @@
 .map-section {
     padding: 80px 0;
     background: var(--white);
+    text-align: center; /* Başlığı ve butonu ortalamak için */
 }
 
 .map-section h2 {
-    margin-bottom: 40px;
+    margin-bottom: 40px; /* Buton ile arasına boşluk bırakmak için */
+    /* Zaten style.css'te alt çizgi ayarı var, buraya gerek yok. */
+}
+
+/* Yol Tarifi Butonunun Yeni Konumu İçin Stil */
+.direction-button-above-map {
+    margin-bottom: 30px; /* Buton ile harita arasına boşluk */
+    text-align: center; /* Butonu ortalamak için */
 }
 
 .map-container {
@@ -172,17 +180,13 @@
     border: 0;
 }
 
-.map-direction-btn {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    padding: 12px 30px;
-    font-size: 1.1rem;
-    display: flex;
+.large-direction-btn { /* Önceki ile aynı stil adı, sadece konumu değişti */
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    display: inline-flex; /* Butonun içeriği ile hizalanmasını sağlar */
     align-items: center;
     gap: 10px;
+    text-decoration: none;
 }
 
 /* Responsive Tasarım */
@@ -231,6 +235,19 @@
         padding: 60px 0;
     }
 
+    .map-section h2 {
+        margin-bottom: 30px;
+    }
+
+    .direction-button-above-map {
+        margin-bottom: 20px;
+    }
+
+    .large-direction-btn {
+        font-size: 1.1rem;
+        padding: 12px 30px;
+    }
+
     .map-container {
         height: 350px;
     }
@@ -258,12 +275,12 @@
         padding: 12px;
     }
 
-    .map-container {
-        height: 300px;
-    }
-
-    .map-direction-btn {
+    .large-direction-btn {
         font-size: 1rem;
         padding: 10px 20px;
+    }
+
+    .map-container {
+        height: 300px;
     }
 }
