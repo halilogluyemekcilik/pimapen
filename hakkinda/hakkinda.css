@@ -1,0 +1,268 @@
+/* Hakkımızda Sayfasına Özel Stiller */
+
+/* Page Hero Bölümü */
+.page-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img/about-hero-bg.jpg') no-repeat center center/cover; /* Arka plan görseli ekleyin */
+    color: var(--white);
+    text-align: center;
+    padding: 100px 0;
+    position: relative;
+}
+
+.page-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: var(--white);
+}
+
+.page-hero p {
+    font-size: 1.2rem;
+    color: var(--white);
+}
+
+/* Şirket Hikayesi Bölümü */
+.company-story {
+    padding: 80px 0;
+    background: var(--light-bg);
+}
+
+.story-content {
+    display: flex;
+    flex-wrap: wrap; /* Küçük ekranlarda alt alta düşmesini sağlar */
+    gap: 40px;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.story-text {
+    flex: 2; /* Daha fazla yer kaplasın */
+    min-width: 300px;
+}
+
+.story-text p {
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-color);
+}
+
+.story-text p strong {
+    color: var(--dark);
+}
+
+.story-image {
+    flex: 1; /* Daha az yer kaplasın */
+    min-width: 250px;
+    text-align: center;
+}
+
+.story-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Misyon ve Vizyon Bölümü */
+.mission-vision {
+    padding: 80px 0;
+    background: var(--white);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.mission-vision .container {
+    display: flex; /* İçerideki elementleri de flex yap */
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.mv-card {
+    flex: 1;
+    min-width: 350px;
+    max-width: 550px; /* Kartların büyümesini sınırlar */
+    background: var(--light-bg);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.mv-card:hover {
+    transform: translateY(-5px);
+}
+
+.mv-card h3 {
+    font-size: 1.8rem;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
+
+.mv-card h3 i {
+    color: var(--primary-color);
+    margin-right: 10px;
+}
+
+.mv-card p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-color);
+}
+
+/* Ekibimiz Bölümü */
+.our-team {
+    padding: 80px 0;
+    background: var(--light-bg);
+}
+
+.team-members {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+    justify-content: center; /* Ortalamak için */
+}
+
+.member-card {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.member-card:hover {
+    transform: translateY(-8px);
+}
+
+.member-card img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 5px solid var(--primary-color);
+}
+
+.member-card h3 {
+    font-size: 1.6rem;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+
+.member-card p:not(.contact-number) {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+.member-card .contact-number {
+    font-size: 0.95rem;
+}
+
+.member-card .contact-number a {
+    color: var(--dark);
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.member-card .contact-number a:hover {
+    color: var(--primary-color);
+}
+
+.member-card .contact-number i {
+    margin-right: 5px;
+    color: var(--primary-color);
+}
+
+
+/* Responsive Tasarım */
+@media (max-width: 992px) {
+    .page-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .page-hero p {
+        font-size: 1.1rem;
+    }
+
+    .story-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .story-image {
+        order: -1; /* Görselin metinden önce gelmesini sağlar */
+        margin-bottom: 30px;
+    }
+
+    .mv-card {
+        min-width: unset;
+        max-width: 100%;
+    }
+
+    .team-members {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .page-hero {
+        padding: 80px 0;
+    }
+
+    .page-hero h1 {
+        font-size: 2rem;
+    }
+
+    .page-hero p {
+        font-size: 1rem;
+    }
+
+    .company-story, .mission-vision, .our-team {
+        padding: 60px 0;
+    }
+
+    .story-content {
+        gap: 30px;
+    }
+
+    .mv-card {
+        padding: 25px;
+    }
+
+    .mv-card h3 {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .page-hero p {
+        font-size: 0.9rem;
+    }
+
+    .story-text p {
+        font-size: 0.95rem;
+    }
+
+    .mv-card {
+        padding: 20px;
+    }
+
+    .mv-card h3 {
+        font-size: 1.4rem;
+    }
+
+    .member-card h3 {
+        font-size: 1.4rem;
+    }
+}

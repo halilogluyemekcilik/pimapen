@@ -1,0 +1,173 @@
+/* Hizmetler Sayfasına Özel Stiller */
+
+/* Page Hero Bölümü */
+.page-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img/services-hero-bg.jpg') no-repeat center center/cover;
+    color: var(--white);
+    text-align: center;
+    padding: 100px 0;
+    position: relative;
+}
+
+.page-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: var(--white);
+}
+
+.page-hero p {
+    font-size: 1.2rem;
+    color: var(--white);
+}
+
+/* Hizmet Listesi Bölümü */
+.services-list {
+    padding: 80px 0;
+    background: var(--light-bg);
+}
+
+.service-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 80px;
+}
+
+.service-item:nth-child(even) {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.service-item:last-child {
+    margin-bottom: 0;
+}
+
+.service-image {
+    flex: 1;
+    min-width: 350px;
+    text-align: center;
+}
+
+.service-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.service-image img:hover {
+    transform: scale(1.02);
+}
+
+.service-content {
+    flex: 1;
+    min-width: 350px;
+}
+
+.service-content h2 {
+    font-size: 2.2rem;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.service-content h2::after {
+    left: 0;
+    transform: none;
+}
+
+.service-content p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.service-content ul {
+    margin-bottom: 20px;
+}
+
+.service-content ul li {
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+    color: var(--dark);
+}
+
+.service-content ul li i {
+    color: var(--primary-color);
+    margin-right: 10px;
+}
+
+/* Ters Sıralama için Stiller */
+.service-item.reverse {
+    flex-direction: row-reverse;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 992px) {
+    .service-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .service-item.reverse {
+        flex-direction: column;
+    }
+
+    .service-content h2 {
+        text-align: center;
+    }
+
+    .service-content h2::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .service-item:nth-child(even) {
+        padding: 20px;
+    }
+
+    .service-image, .service-content {
+        min-width: unset;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-hero {
+        padding: 80px 0;
+    }
+
+    .page-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .services-list {
+        padding: 60px 0;
+    }
+
+    .service-content h2 {
+        font-size: 2rem;
+    }
+
+    .service-content p {
+        font-size: 1rem;
+    }
+
+    .service-content ul li {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-hero h1 {
+        font-size: 2rem;
+    }
+
+    .service-content h2 {
+        font-size: 1.8rem;
+    }
+}
