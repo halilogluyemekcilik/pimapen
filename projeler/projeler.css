@@ -79,7 +79,7 @@
 
 /* Modal Stilleri */
 .modal {
-    display: none; /* Varsayılan olarak gizli */
+    /* display: none;  Bu satırı silebilir veya yorum satırı yapabilirsiniz */ 
     position: fixed; /* Ekranın üzerinde kalır */
     z-index: 2000; /* Diğer her şeyin üstünde */
     left: 0;
@@ -88,9 +88,13 @@
     height: 100%;
     overflow: auto; /* İçerik taşarsa kaydırma çubuğu */
     background-color: rgba(0,0,0,0.8); /* Yarı saydam siyah arka plan */
-    display: flex; /* İçeriği ortalamak için */
+    /* display: flex; Bu satırı da silebilir veya yorum satırı yapabilirsiniz, çünkü JavaScript ile kontrol edilecek */
     align-items: center;
     justify-content: center;
+    
+    /* Doğru Başlangıç Durumu: Varsayılan olarak gizli olsun */
+    /* JavaScript bunu 'flex' olarak değiştirecek. */
+    display: none; /* MODALIN BAŞLANGIÇTA GİZLİ OLMASINI SAĞLAYAN TEK SATIR BU OLMALI */
 }
 
 .modal-content {
@@ -112,18 +116,33 @@
 
 .close-button {
     color: var(--dark);
-    font-size: 40px;
+    font-size: 40px; /* Çarpı işaretinin boyutu */
     font-weight: bold;
     position: absolute;
-    top: 10px;
-    right: 20px;
+    /* top ve right değerlerini değiştiriyoruz */
+    top: 0;   /* Modal içeriğinin en üstüne hizala */
+    right: 0; /* Modal içeriğinin en sağına hizala */
+    
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    
+    /* Tıklama Alanını Genişletme ve Ortalama */
+    padding: 15px; /* Tıklanabilir alanı genişletir */
+    background-color: transparent;
+    display: flex; /* İçeriği (çarpıyı) ortalamak için */
+    justify-content: center;
+    align-items: center;
+    min-width: 50px; /* Minimum tıklama genişliği */
+    min-height: 50px; /* Minimum tıklama yüksekliği */
+    box-sizing: border-box; /* padding ve border'ı width/height içine dahil eder */
+    z-index: 2001; /* Modalın kendisinden daha yüksek olmalı */
 }
 
 .close-button:hover,
 .close-button:focus {
     color: var(--primary-color);
+    background-color: rgba(0, 0, 0, 0.1);
+    outline: none;
 }
 
 .modal-media-gallery {
