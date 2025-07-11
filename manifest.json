@@ -2,7 +2,7 @@
   "name": "Pier Alüminyum",
   "short_name": "Pier Alüminyum",
   "description": "Pier Alüminyum, cam ve alüminyum sistemlerinde yenilikçi ve kaliteli çözümler sunar.",
-  "start_url": "/index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "scope": "/",
   "background_color": "#ffffff",
