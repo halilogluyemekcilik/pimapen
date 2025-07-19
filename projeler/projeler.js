@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const projectsContainer = document.getElementById('projects-container');
     const loadingMessage = document.getElementById('loading-message');
+    // Eğer HTML'inizde henüz bir modal yoksa, bu kısımlar hata verecektir.
+    // Lütfen modal ile ilgili HTML yapınızı da eklediğinizden emin olun.
     const projectModal = document.getElementById('projectModal');
     const closeModalButton = document.querySelector('.close-button');
     const modalTitle = document.getElementById('modal-title');
@@ -10,96 +12,92 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch and process project data
     const fetchProjects = async () => {
         try {
-            // Simulate fetching project IDs from the server by listing files
-            // In a real scenario, you might have an API endpoint returning project metadata.
-            // For this setup, we'll assume project IDs are integers starting from 1.
-            // We'll try to find project data up to a reasonable number, e.g., 50 projects.
             const maxProjectCount = 50;
-            const projectIDs = [];
+            const projectChecks = []; // Tüm proje kontrolü promise'larını tutacak dizi
+
             for (let i = 1; i <= maxProjectCount; i++) {
-                // Check if the main text file for the project exists
-                const txtResponse = await fetch(`img/${i}.txt`, { method: 'HEAD' });
-                if (txtResponse.ok) {
-                    projectIDs.push(i);
-                }
+                // Her bir HEAD isteğini başlat ve promise'ı diziye ekle
+                projectChecks.push(
+                    fetch(`img/${i}.txt`, { method: 'HEAD' })
+                        .then(response => response.ok ? i : null) // Başarılıysa ID'yi, değilse null dön
+                        .catch(() => null) // Hata durumunda da null dön
+                );
             }
 
-            loadingMessage.style.display = 'none'; // Hide loading message
+            // Tüm HEAD isteklerinin tamamlanmasını bekle
+            const results = await Promise.all(projectChecks);
+            const projectIDs = results.filter(id => id !== null); // Başarılı olan ID'leri filtrele
+
+            loadingMessage.style.display = 'none'; // Yükleme mesajını gizle
 
             if (projectIDs.length === 0) {
                 projectsContainer.innerHTML = '<p class="no-projects">Henüz yüklü proje bulunmamaktadır.</p>';
                 return;
             }
 
-            for (const id of projectIDs) {
-                const projectTitle = `Proje ${id}`; // Default title, can be enhanced
+            // Her bir proje ID'si için detaylı veriyi paralel olarak çek
+            const projectDataPromises = projectIDs.map(async (id) => {
+                const projectTitle = `Proje ${id}`;
                 let description = 'Açıklama bulunamadı.';
                 const images = [];
                 let video = null;
 
-                // Fetch description
-                try {
-                    const descResponse = await fetch(`img/${id}.txt`);
-                    if (descResponse.ok) {
-                        description = await descResponse.text();
-                    }
-                } catch (error) {
-                    console.warn(`Proje ${id} için metin dosyası bulunamadı: ${error}`);
+                // Açıklama, resimler ve video için paralel istekleri başlat
+                // Not: Resimler için HEAD isteği kullanırken, video için de HEAD kullanmalıyız.
+                // Video yanıtı imageResponses dizisinin sonunda yer alacaktır.
+                const [descResponse, ...mediaResponses] = await Promise.all([
+                    fetch(`img/${id}.txt`).catch(() => null), // Açıklama dosyası
+                    ...Array.from({ length: 10 }, (_, i) => fetch(`img/${id}-${i + 1}.jpg`, { method: 'HEAD' }).catch(() => null)), // 10 adede kadar resim
+                    fetch(`img/${id}.mp4`, { method: 'HEAD' }).catch(() => null) // Video dosyası (son eleman)
+                ]);
+
+                // Açıklamayı işle
+                if (descResponse && descResponse.ok) {
+                    description = await descResponse.text();
                 }
 
-                // Fetch images
-                for (let i = 1; i <= 10; i++) { // Max 10 images per project
-                    const imgPath = `img/${id}-${i}.jpg`;
-                    try {
-                        const imgResponse = await fetch(imgPath, { method: 'HEAD' });
-                        if (imgResponse.ok) {
-                            images.push(imgPath);
-                        } else {
-                            // If X-1.jpg doesn't exist, assume no more images for project X
-                            break;
-                        }
-                    } catch (error) {
-                        break; // Stop if there's an error (e.g., file not found)
+                // Resimleri işle
+                for (let i = 0; i < 10; i++) {
+                    if (mediaResponses[i] && mediaResponses[i].ok) {
+                        images.push(`img/${id}-${i + 1}.jpg`);
                     }
                 }
 
-                // Check for video
-                const videoPath = `img/${id}.mp4`;
-                try {
-                    const videoResponse = await fetch(videoPath, { method: 'HEAD' });
-                    if (videoResponse.ok) {
-                        video = videoPath;
-                    }
-                } catch (error) {
-                    // No video, just ignore
+                // Videoyu işle (mediaResponses dizisinin son elemanı)
+                // mediaResponses.length - 1 son elemanı verir, bu da videonun HEAD isteğidir.
+                const videoResponse = mediaResponses[mediaResponses.length - 1];
+                if (videoResponse && videoResponse.ok) {
+                    video = `img/${id}.mp4`;
                 }
 
-                // Create project card
+                return { id, title: projectTitle, description, images, video };
+            });
+
+            // Tüm proje verilerinin çekilmesini bekle
+            const allProjectData = await Promise.all(projectDataPromises);
+
+            // Şimdi elimizde tüm projelerin verileri var, bunları HTML'e ekleyebiliriz
+            allProjectData.forEach(project => {
                 const projectCard = document.createElement('div');
                 projectCard.classList.add('project-card');
-                projectCard.setAttribute('data-project-id', id);
+                projectCard.setAttribute('data-project-id', project.id);
 
-                // Use the first image as thumbnail or a placeholder
-                const thumbnailSrc = images.length > 0 ? images[0] : 'img/placeholder.jpg'; // You might need a generic placeholder
-                
+                // İlk resmi veya placeholder'ı thumbnail olarak kullan
+                const thumbnailSrc = project.images.length > 0 ? project.images[0] : 'img/placeholder.jpg';
+
                 projectCard.innerHTML = `
-                    <img src="${thumbnailSrc}" alt="${projectTitle}">
-                    <h3>${projectTitle}</h3>
-                    <p>${description.substring(0, 100)}...</p> `;
-                
+                    <img src="${thumbnailSrc}" alt="${project.title}">
+                    <h3>${project.title}</h3>
+                    <p>${project.description.substring(0, 100)}...</p>
+                `;
+
                 projectsContainer.appendChild(projectCard);
 
-                // Add click event listener to open modal
+                // Modal açma olay dinleyicisini ekle
                 projectCard.addEventListener('click', () => {
-                    openProjectModal({
-                        id: id,
-                        title: projectTitle,
-                        description: description,
-                        images: images,
-                        video: video
-                    });
+                    openProjectModal(project);
                 });
-            }
+            });
 
         } catch (error) {
             console.error('Projeler yüklenirken hata oluştu:', error);
@@ -109,11 +107,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to open the project modal
     const openProjectModal = (project) => {
+        if (!projectModal) { // projectModal elementi bulunamazsa hata vermemesi için kontrol
+            console.error("Proje modal elementi bulunamadı. Lütfen HTML'inizi kontrol edin.");
+            return;
+        }
+
         modalTitle.textContent = project.title;
         modalDescription.textContent = project.description;
-        modalMediaGallery.innerHTML = ''; // Clear previous media
+        modalMediaGallery.innerHTML = ''; // Önceki medyayı temizle
 
-        // Add main media (first image or video)
+        // Ana medyayı (ilk resim veya video) ekle
         let mainMediaSrc = null;
         let mainMediaType = null;
 
@@ -132,20 +135,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (mainMediaType === 'video') {
                 mainMediaElement.controls = true;
                 mainMediaElement.autoplay = true;
-                mainMediaElement.loop = true; // Optional: loop video
-                mainMediaElement.muted = true; // Optional: mute video on autoplay
+                mainMediaElement.loop = true; // İsteğe bağlı: videoyu döngüye al
+                mainMediaElement.muted = false; // İsteğe bağlı: autoplay'de sesi kapatma
             }
             modalMediaGallery.appendChild(mainMediaElement);
         }
 
-        // Add other images/videos as thumbnails
+        // Diğer resimleri/videoyu thumbnail olarak ekle
         project.images.forEach((imgSrc, index) => {
-            if (index === 0 && mainMediaType === 'image') return; // Skip if already main
+            if (index === 0 && mainMediaType === 'image' && mainMediaSrc === imgSrc) return; // Zaten ana medya ise atla
             const imgElement = document.createElement('img');
             imgElement.src = imgSrc;
             imgElement.alt = `Proje ${project.id} Resim ${index + 1}`;
             imgElement.addEventListener('click', () => {
-                // Change main media to clicked image
+                // Tıklanan resmi ana medya yap
                 const currentMain = modalMediaGallery.querySelector('.main-media');
                 if (currentMain) {
                     currentMain.classList.remove('active');
@@ -154,20 +157,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newMain = document.createElement('img');
                 newMain.classList.add('main-media', 'active');
                 newMain.src = imgSrc;
-                modalMediaGallery.prepend(newMain); // Add to the beginning
+                modalMediaGallery.prepend(newMain); // Başa ekle
             });
             modalMediaGallery.appendChild(imgElement);
         });
 
+        // Eğer video varsa ve ana medya olarak eklenmediyse thumbnail olarak ekle
         if (project.video && !(mainMediaType === 'video' && mainMediaSrc === project.video)) {
             const videoElement = document.createElement('video');
             videoElement.src = project.video;
-            videoElement.controls = false; // Thumbnails don't need controls
+            videoElement.controls = false; // Thumbnail'larda kontrolleri gösterme
             videoElement.addEventListener('click', () => {
-                // Change main media to clicked video
+                // Tıklanan videoyu ana medya yap
                 const currentMain = modalMediaGallery.querySelector('.main-media');
                 if (currentMain) {
                     currentMain.classList.remove('active');
+                    currentMain.pause(); // Eski videoyu durdur
                     currentMain.remove();
                 }
                 const newMain = document.createElement('video');
@@ -176,28 +181,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 newMain.controls = true;
                 newMain.autoplay = true;
                 newMain.loop = true;
-                newMain.muted = false; // Unmute when it's the main video
-                modalMediaGallery.prepend(newMain); // Add to the beginning
+                newMain.muted = false; // Ana video olduğunda sesi aç
+                modalMediaGallery.prepend(newMain); // Başa ekle
             });
             modalMediaGallery.appendChild(videoElement);
         }
 
-
-        projectModal.style.display = 'flex'; // Display the modal
-        document.body.style.overflow = 'hidden'; // Prevent scrolling on body
+        projectModal.style.display = 'flex'; // Modalı göster
+        document.body.style.overflow = 'hidden'; // Body kaydırmasını engelle
     };
 
-    // Close modal when close button is clicked
-    closeModalButton.addEventListener('click', () => {
-        projectModal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Re-enable scrolling
-        const mainVideo = modalMediaGallery.querySelector('video.main-media');
-        if (mainVideo) {
-            mainVideo.pause(); // Pause video when closing modal
-        }
-    });
+    // Modalı kapatma butonuna tıklama olayını dinle
+    if (closeModalButton) { // close button elementi bulunamazsa hata vermemesi için kontrol
+        closeModalButton.addEventListener('click', () => {
+            projectModal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Kaydırmayı tekrar etkinleştir
+            const mainVideo = modalMediaGallery.querySelector('video.main-media');
+            if (mainVideo) {
+                mainVideo.pause(); // Modalı kapatırken videoyu duraklat
+            }
+        });
+    }
 
-    // Close modal when clicking outside the modal content
+
+    // Modal içeriğinin dışına tıklama olayını dinle (modalı kapatmak için)
     window.addEventListener('click', (event) => {
         if (event.target === projectModal) {
             projectModal.style.display = 'none';
@@ -209,6 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initial load of projects
+    // Sayfa yüklendiğinde projeleri getir
     fetchProjects();
 });
